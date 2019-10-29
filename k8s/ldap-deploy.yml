@@ -1,0 +1,119 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ldap
+data:
+      LDAP_TLS: 'true'
+      LDAP_TLS_CRT_FILENAME: /certs/tls.crt
+      LDAP_TLS_KEY_FILENAME: /certs/tls.key
+      LDAP_TLS_CA_CRT_FILENAME: /certs/ca.crt
+      LDAP_ORGANISATION: example
+      LDAP_BASE_DN: dc=example,dc=com
+      LDAP_MAX_DB_SIZE: '1073741824'
+      LDAP_GROUP_ADMIN: 'false'
+      LDAP_READONLY_USER: 'true'
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ldap
+stringData:
+      LDAP_ADMIN_NAME: megaadmin
+      LDAP_ADMIN_PASSWORD: megasecret
+      LDAP_READONLY_USER_USERNAME: reader
+      LDAP_READONLY_USER_PASSWORD: secretreader
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ldap-config
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ldap-data
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+
+      containers:
+      - name: openldap
+        image: netflyer/openldap:latest
+        ports:
+        - containerPort: 389
+        - containerPort: 636
+        envFrom:
+        - configMapRef:
+            name: ldap
+        - secretRef:
+            name: ldap
+        volumeMounts:
+        - name: ldap-certs
+          mountPath: /certs
+        - mountPath: /var/lib/openldap
+          name: ldap-data
+        - mountPath: /etc/openldap
+          name: ldap-config
+
+#      For private registry
+#      imagePullSecrets:
+#      - name: login-registry
+
+      volumes:
+      - name: ldap-data
+        persistentVolumeClaim:
+          claimName: ldap-data
+      - name: ldap-config
+        persistentVolumeClaim:
+          claimName: ldap-config
+      - name: ldap-certs
+        secret:
+          secretName: ldap-cert-tls
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: openldap
+spec:
+  type: ClusterIP
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+  - name: ldaps
+    port: 636
+    targetPort: 636
+  selector:
+    app: openldap
+

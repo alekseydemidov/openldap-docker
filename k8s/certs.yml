@@ -1,0 +1,17 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: selfsigned-noca
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ldap-selfsigned
+spec:
+  commonName: openldap
+  secretName: ldap-cert-tls
+  issuerRef:
+    name: selfsigned-noca
