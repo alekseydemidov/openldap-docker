@@ -1,7 +1,8 @@
 FROM alpine
 LABEL MAINTAINER="Alexey Demidov <ademidov.info@gmail.com>"
 RUN apk update && \
-    apk add bash openldap-back-mdb openldap openldap-clients openldap-overlay-ppolicy && \
+    apk add bash openldap-back-mdb openldap openldap-clients \
+    openldap-overlay-ppolicy openldap-overlay-memberof openldap-overlay-refint && \
     rm -rf /var/cache/apk/* ; \
     mkdir /run/openldap/ /etc/openldap/slapd.d /init && \
     cp /var/lib/openldap/openldap-data/DB_CONFIG.example /var/lib/openldap/openldap-data/DB_CONFIG; \
