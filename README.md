@@ -43,3 +43,11 @@ ou=People (with cn=ROuser if set up)
 ou=pwpolicies
 
 Hyperlink to [dockerhub images](https://hub.docker.com/r/netflyer/openldap)
+
+## Updating:  
+*V1.1*   
+Added modules: memberof and refinit   
+The most convenient way to use classes:   
+groupOfName - for memberof   
+and organizationRole - for refinit   
+
