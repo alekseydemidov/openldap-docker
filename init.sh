@@ -52,7 +52,7 @@ objectClass: top
 objectClass: organizationalUnit
 
 # add default policy to DIT
-dn: cn=default,ou=pwpolicies,dc=vmcloud,dc=loc
+dn: cn=default,ou=pwpolicies,$LDAP_BASE_DN
 objectClass: applicationProcess
 objectClass: pwdPolicy
 cn: default
