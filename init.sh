@@ -80,7 +80,7 @@ cat <<EOF>> /init/base.ldif
 dn: cn=$LDAP_GROUP_ADMIN,ou=Groups,$LDAP_BASE_DN
 cn: $LDAP_GROUP_ADMIN
 objectClass: top
-objectClass: posixGroup
+objectClass: groupOfNames
 gidNumber: 1
 EOF
 fi
