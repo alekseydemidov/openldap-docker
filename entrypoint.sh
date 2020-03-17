@@ -45,7 +45,7 @@ if [ ! -f /etc/openldap/slapd.d/.init ]; then
         sed -i -e "/.*LDAP_READONLY_USER_USERNAME.*/d" /etc/openldap/slapd.conf
     fi
 
-    if [ "${LDAP_GROUP_ADMIN,,}" == "" ]; then
+    if [ "${LDAP_GROUP_ADMIN,,}" == "false" ]; then
         sed -i -e "/.*LDAP_GROUP_ADMIN.*/d" /etc/openldap/slapd.conf
     else
         sed -i -e "s|LDAP_GROUP_ADMIN|$LDAP_GROUP_ADMIN|g" /etc/openldap/slapd.conf
