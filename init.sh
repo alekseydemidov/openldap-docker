@@ -40,8 +40,8 @@ objectClass: top
 objectClass: organizationalUnit
 
 # Groups, $LDAP_DOMAIN
-dn: ou=Group,$LDAP_BASE_DN
-ou: Group
+dn: ou=Groups,$LDAP_BASE_DN
+ou: Groups
 objectClass: top
 objectClass: organizationalUnit
 
@@ -77,7 +77,7 @@ if [ "${LDAP_GROUP_ADMIN,,}" != "false" ]; then
 cat <<EOF>> /init/base.ldif
 
 # $LDAP_GROUP_ADMIN, $LDAP_DOMAIN
-dn: cn=$LDAP_GROUP_ADMIN,ou=Group,$LDAP_BASE_DN
+dn: cn=$LDAP_GROUP_ADMIN,ou=Groups,$LDAP_BASE_DN
 cn: $LDAP_GROUP_ADMIN
 objectClass: top
 objectClass: posixGroup
