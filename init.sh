@@ -6,6 +6,7 @@ LDAP_DOMAIN=`echo $LDAP_BASE_DN | awk -F ",|=" '{ print $2"."$4 }'`
 
 LDAP_ADMIN_NAME=${LDAP_ADMIN_NAME:-'manager'}
 LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD:-'adminsecret'}
+LDAP_ADMIN_PASSWORD_SSHA=$(slappasswd -s $LDAP_ADMIN_PASSWORD)
 LDAP_GROUP_ADMIN=${LDAP_GROUP_ADMIN:-'Admins'}
 LDAP_READONLY_USER=${LDAP_READONLY_USER:-false}
 LDAP_READONLY_USER_USERNAME=${LDAP_READONLY_USER_USERNAME:-'readuser'}
@@ -26,12 +27,18 @@ objectClass: dcObject
 objectClass: organization
 
 # Manager, $LDAP_DOMAIN
-dn: cn=$LDAP_ADMIN_NAME,$LDAP_BASE_DN
+dn: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
 cn: $LDAP_ADMIN_NAME
 description: LDAP administrator
 objectClass: organizationalRole
 objectClass: top
+objectClass: posixAccount
 roleOccupant: $LDAP_BASE_DN
+userPassword: $LDAP_ADMIN_PASSWORD_SSHA
+uid: $LDAP_ADMIN_USER_NAME
+uidNumber: 1
+gidNumber: 1
+homeDirectory: /sbin/nologin
 
 # People, $LDAP_DOMAIN
 dn: ou=People,$LDAP_BASE_DN
@@ -65,10 +72,10 @@ pwdCheckQuality: 0
 pwdMaxFailure: 15
 pwdLockout: FALSE
 pwdLockoutDuration: 3600
-#pwdGraceAuthNLimit: 0
-#pwdFailureCountInterval: 0
+pwdGraceAuthNLimit: 0
+pwdFailureCountInterval: 0
 pwdMustChange: FALSE
-pwdMinLength: 6
+#pwdMinLength: 6 #Not applicable without pwdCheckQuality, not implemented for alpine
 pwdAllowUserChange: TRUE
 pwdSafeModify: FALSE
 EOF
@@ -81,6 +88,7 @@ dn: cn=$LDAP_GROUP_ADMIN,ou=Groups,$LDAP_BASE_DN
 cn: $LDAP_GROUP_ADMIN
 objectClass: top
 objectClass: groupOfNames
+memberOf: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
 gidNumber: 1
 EOF
 fi
