@@ -65,6 +65,25 @@ pwdMustChange: FALSE
 pwdAllowUserChange: TRUE
 pwdSafeModify: FALSE
 
+# add policy to DIT for built-in users (manager and/or reader)
+dn: cn=builtin,ou=pwpolicies,$LDAP_BASE_DN
+objectClass: applicationProcess
+objectClass: pwdPolicy
+cn: builtin
+pwdAttribute: userPassword
+pwdMaxAge: 0
+pwdExpireWarning: 3600
+pwdInHistory: 0
+pwdCheckQuality: 0
+pwdMaxFailure: 15
+pwdLockout: FALSE
+pwdLockoutDuration: 3600
+pwdGraceAuthNLimit: 0
+pwdFailureCountInterval: 0
+pwdMustChange: FALSE
+pwdAllowUserChange: TRUE
+pwdSafeModify: FALSE
+
 # Manager, $LDAP_DOMAIN
 dn: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
 cn: $LDAP_ADMIN_NAME
@@ -78,6 +97,7 @@ uid: $LDAP_ADMIN_NAME
 uidNumber: 1
 gidNumber: 1
 homeDirectory: /sbin/nologin
+pwdPolicySubentry: cn=builtin,ou=pwpolicies,$LDAP_BASE_DN
 EOF
 
 if [ "${LDAP_GROUP_ADMIN,,}" != "false" ]; then
@@ -107,6 +127,7 @@ uid: $LDAP_READONLY_USER_USERNAME
 uidNumber: 2
 gidNumber: 2
 homeDirectory: /sbin/nologin
+pwdPolicySubentry: cn=builtin,ou=pwpolicies,$LDAP_BASE_DN
 EOF
 fi
 
