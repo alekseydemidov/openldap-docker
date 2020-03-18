@@ -26,20 +26,6 @@ o: $LDAP_ORGANISATION
 objectClass: dcObject
 objectClass: organization
 
-# Manager, $LDAP_DOMAIN
-dn: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
-cn: $LDAP_ADMIN_NAME
-description: LDAP administrator
-objectClass: organizationalRole
-objectClass: top
-objectClass: posixAccount
-roleOccupant: $LDAP_BASE_DN
-userPassword: $LDAP_ADMIN_PASSWORD_SSHA
-uid: $LDAP_ADMIN_USER_NAME
-uidNumber: 1
-gidNumber: 1
-homeDirectory: /sbin/nologin
-
 # People, $LDAP_DOMAIN
 dn: ou=People,$LDAP_BASE_DN
 ou: People
@@ -78,6 +64,20 @@ pwdMustChange: FALSE
 #pwdMinLength: 6 #Not applicable without pwdCheckQuality, not implemented for alpine
 pwdAllowUserChange: TRUE
 pwdSafeModify: FALSE
+
+# Manager, $LDAP_DOMAIN
+dn: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
+cn: $LDAP_ADMIN_NAME
+description: LDAP administrator
+objectClass: organizationalRole
+objectClass: top
+objectClass: posixAccount
+roleOccupant: $LDAP_BASE_DN
+userPassword: $LDAP_ADMIN_PASSWORD_SSHA
+uid: $LDAP_ADMIN_USER_NAME
+uidNumber: 1
+gidNumber: 1
+homeDirectory: /sbin/nologin
 EOF
 
 if [ "${LDAP_GROUP_ADMIN,,}" != "false" ]; then
@@ -115,4 +115,4 @@ ldapadd -h localhost -D "cn=$LDAP_ADMIN_NAME,$LDAP_BASE_DN" -w "$LDAP_ADMIN_PASS
 rm /init/base.ldif 
 fi
 
-rm -rf /init/
+#rm -rf /init/
