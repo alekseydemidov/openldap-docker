@@ -88,7 +88,7 @@ dn: cn=$LDAP_GROUP_ADMIN,ou=Groups,$LDAP_BASE_DN
 cn: $LDAP_GROUP_ADMIN
 objectClass: top
 objectClass: groupOfNames
-memberOf: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
+member: cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN
 gidNumber: 1
 EOF
 fi
