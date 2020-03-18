@@ -37,14 +37,17 @@ LDAP_READONLY_USER_PASSWORD='readsecret'
 
 ## Default outgoing LDAP schema will be:
 LDAP_BASE_DN  
-cn=admin  
 ou=Group  
-ou=People (with cn=ROuser if set up)  
+ou=People (with cn=admin and cn=ROuser if set up)  
 ou=pwpolicies
 
 Hyperlink to [dockerhub images](https://hub.docker.com/r/netflyer/openldap)
 
-## Updating:  
+## Updating:
+*V1.2*   
+Add ppolicy module   
+There's defined 2 policies: builtin - for Manager and/or Reader users   
+default - for any another users   
 *V1.1*   
 Added modules: memberof and refinit   
 The most convenient way to use classes:   

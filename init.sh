@@ -135,4 +135,4 @@ ldapadd -h localhost -D "cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN" -w "$LDAP_
 
 fi
 
-#rm -rf /init/
+rm -rf /init/
