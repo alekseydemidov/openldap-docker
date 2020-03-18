@@ -14,7 +14,7 @@ LDAP_READONLY_USER_PASSWORD=${LDAP_READONLY_USER_PASSWORD:-'readsecret'}
 LDAP_READONLY_USER_PASSWORD_SSHA=$(slappasswd -s $LDAP_READONLY_USER_PASSWORD)
 
 
-if ldapsearch -h localhost -b "$LDAP_BASE_DN" -D "cn=$LDAP_ADMIN_NAME,$LDAP_BASE_DN" -w "$LDAP_ADMIN_PASSWORD" '(objectclass=*)' | grep -E "dn: *$LDAP_BASE_DN" > /dev/null ; then
+if ldapsearch -h localhost -b "$LDAP_BASE_DN" -D "cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN" -w "$LDAP_ADMIN_PASSWORD" '(objectclass=*)' | grep -E "dn: *$LDAP_BASE_DN" > /dev/null ; then
     echo "DB already ready"
 else
 echo "Create initial entry"
@@ -74,7 +74,7 @@ objectClass: top
 objectClass: posixAccount
 roleOccupant: $LDAP_BASE_DN
 userPassword: $LDAP_ADMIN_PASSWORD_SSHA
-uid: $LDAP_ADMIN_USER_NAME
+uid: $LDAP_ADMIN_NAME
 uidNumber: 1
 gidNumber: 1
 homeDirectory: /sbin/nologin
@@ -111,8 +111,8 @@ homeDirectory: /sbin/nologin
 EOF
 fi
 
-ldapadd -h localhost -D "cn=$LDAP_ADMIN_NAME,$LDAP_BASE_DN" -w "$LDAP_ADMIN_PASSWORD" -f /init/base.ldif
-rm /init/base.ldif 
+ldapadd -h localhost -D "cn=$LDAP_ADMIN_NAME,ou=People,$LDAP_BASE_DN" -w "$LDAP_ADMIN_PASSWORD" -f /init/base.ldif
+
 fi
 
 #rm -rf /init/
