@@ -26,7 +26,7 @@ LDAP_ORGANISATION='org_name'
 LDAP_BASE_DN='dc=example,dc=com'  
 LDAP_MAX_DB_SIZE=1073741824  
 
-LDAP_ADMIN_NAME='admin'  
+LDAP_ADMIN_NAME='admin'  **/DN for login: cn=admin,ou=People,dc=example,dc=com/**  
 LDAP_ADMIN_PASSWORD='adminsecret'  
 LDAP_GROUP_ADMIN='Admins'   
 *The member of this group will have possibility to manage groups and people, if you don't need, just set LDAP_GROUP_ADMIN='false'*
@@ -37,7 +37,7 @@ LDAP_READONLY_USER_PASSWORD='readsecret'
 
 ## Default outgoing LDAP schema will be:
 LDAP_BASE_DN  
-ou=Group  
+ou=Groups  
 ou=People (with cn=admin and cn=ROuser if set up)  
 ou=pwpolicies
 
